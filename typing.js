@@ -7,24 +7,35 @@ async function getJson(filePath) {
 async function main() {
   try {
     const file = await getJson("./english_1k.json")
-    newGame(15, file.words)
+    newGame(200, file.words)
   } catch (error) {
     console.error(error)
   }
 }
 
-function getText(textLen, arr) {
-  let text = ""
-  for (i=0; i<textLen; i++) {
-    let randIndex = Math.floor(Math.random() * arr.length); 
-    text = text + arr[randIndex] + " "
+function formatWord(word) {
+  return `<div class="word">
+            ${word}
+          </div>`
+}
+
+function getWord(arr) {
+  let randIndex = Math.floor(Math.random() * arr.length); 
+  let letters = arr[randIndex].split("");
+  let newWord = "";
+
+  for (let i=0; i<letters.length; i++) {
+    newWord += `<span class="letter">${letters[i]}</span>`
   }
-  return text.trim();
+  console.log(newWord)
+  return newWord
 }
 
 function newGame(textLen, arr) {
-  document.getElementById("words").innerHTML = ""
-  document.getElementById("words").innerHTML += getText(textLen, arr)
+  document.getElementById("words").innerHTML = "";
+  for (i=0; i<textLen; i++) {
+    document.getElementById("words").innerHTML += formatWord(getWord(arr))
+  }
 }
 
 main();

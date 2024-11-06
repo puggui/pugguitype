@@ -8,7 +8,7 @@
 }
 
 body {
-  font-family: 'Roboto Mono', sans-serif;
+  font-family: 'Roboto Mono', monospace;
   background-color: var(--bgColor);
   color: var(--textPrimary);
 }
@@ -25,6 +25,7 @@ main {
 #header {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  margin: 20px 6px 30px;
 }
 
 #buttons {
@@ -37,4 +38,16 @@ button {
   color: rgba(255, 255, 255, 0.5); 
   padding: 5px 20px;
   border-radius: 5px;
+}
+
+.word{
+  display: inline-block;
+  font-family: 'Roboto Mono', monospace;
+  margin: 0 5px;
+}
+
+#game {
+  line-height: 35px;
+  height: 105px;
+  overflow: hidden;
 }
