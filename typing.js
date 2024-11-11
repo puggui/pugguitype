@@ -54,13 +54,20 @@ document.getElementById("game").addEventListener("keydown", e => {
   
   console.log(e)
   
-  if (key.length === 1 && key !== " " && currLetter) {
-    addClass(currLetter, key === expected ? "correct": "incorrect")
-    removeClass(currLetter, "current")
-    if (currLetter.nextSibling) {
-      addClass(currLetter.nextSibling, "current")
+  if (key.length === 1 && key !== " ") {
+    if (currLetter) {
+      addClass(currLetter, key === expected ? "correct": "incorrect")
+      removeClass(currLetter, "current")
+      if (currLetter.nextSibling) addClass(currLetter.nextSibling, "current")
+    } else {
+      const incorrectLetter = document.createElement('span');
+      incorrectLetter.innerHTML = key;
+      incorrectLetter.className = "letter incorrect extra";
+      currWord.appendChild(incorrectLetter)
     }
-  }
+  } 
+
+
   if (e.code === "Space") {
     if (expected !== " ") {
       const lettersToInvalidate = [...document.querySelectorAll('.word.current .letter:not(.correct)')];
