@@ -11,6 +11,7 @@ body {
   font-family: 'Roboto Mono', monospace;
   background-color: var(--bgColor);
   color: var(--textPrimary);
+  margin: 50px;
 }
 
 h1 {
@@ -25,7 +26,7 @@ main {
 #header {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  margin: 20px 6px 30px;
+  margin: 50px 6px 30px;
 }
 
 #buttons {
@@ -50,4 +51,61 @@ button {
   line-height: 35px;
   height: 105px;
   overflow: hidden;
+  position: relative;
+}
+
+#game:focus #words {
+  filter: blur(0);
+}
+
+#game:focus #focus-error {
+  display: none;
+}
+
+#focus-error {
+  position: absolute;
+  inset: 0;
+  padding-top: 35px;
+  text-align: center;
+}
+
+#words {
+  color: var(--textSecondary);
+  filter: blur(5px);
+}
+
+.letter.correct {
+  color: #fff;
+}
+
+.letter.incorrect {
+  color: #f55;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+  
+}
+
+#cursor {
+  display: none;
+  width: 2px;
+  height: 1.6rem;
+  background-color: var(--primaryColor);
+  position: fixed;
+  top: 198px;
+  left: 18px;
+  animation: blink 1s infinite;
+}
+
+#game:focus #cursor {
+  display: block;
 }

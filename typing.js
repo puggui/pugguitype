@@ -7,16 +7,22 @@ async function getJson(filePath) {
 async function main() {
   try {
     const file = await getJson("./english_1k.json")
-    newGame(200, file.words)
+    newGame(100, file.words)
   } catch (error) {
     console.error(error)
   }
 }
 
+function addClass(el, name) {
+  el.className += " " + name;
+}
+
+function removeClass(el, name) {
+  el.className = el.className.replace(name, "")
+}
+
 function formatWord(word) {
-  return `<div class="word">
-            ${word}
-          </div>`
+  return `<div class="word">${word}</div>`
 }
 
 function getWord(arr) {
@@ -27,7 +33,6 @@ function getWord(arr) {
   for (let i=0; i<letters.length; i++) {
     newWord += `<span class="letter">${letters[i]}</span>`
   }
-  console.log(newWord)
   return newWord
 }
 
@@ -36,7 +41,42 @@ function newGame(textLen, arr) {
   for (i=0; i<textLen; i++) {
     document.getElementById("words").innerHTML += formatWord(getWord(arr))
   }
+  addClass(document.querySelector(".word"), "current");
+  addClass(document.querySelector(".letter"), "current");
+  
 }
+
+document.getElementById("game").addEventListener("keydown", e => {
+  const key = e.key;
+  const currLetter = document.querySelector(".letter.current");
+  const currWord = document.querySelector(".word.current");
+  const expected = currLetter?.innerHTML || " ";
+  
+  console.log(e)
+  
+  if (key.length === 1 && key !== " " && currLetter) {
+    addClass(currLetter, key === expected ? "correct": "incorrect")
+    removeClass(currLetter, "current")
+    if (currLetter.nextSibling) {
+      addClass(currLetter.nextSibling, "current")
+    }
+  }
+  if (e.code === "Space") {
+    if (expected !== " ") {
+      const lettersToInvalidate = [...document.querySelectorAll('.word.current .letter:not(.correct)')];
+      lettersToInvalidate.forEach(letter => {
+        addClass(letter, "incorrect")
+      })
+    }
+    removeClass(currWord, "current")
+    addClass(currWord.nextSibling, "current")
+    if (currLetter) {
+      removeClass(currLetter, 'current');
+    }
+    addClass(currWord.nextSibling.firstChild, 'current');
+  }
+
+})
 
 main();
 
