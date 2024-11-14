@@ -4,7 +4,7 @@
   --bgColor: #333;
   --textPrimary: #fff;
   --textSecondary: #666;
-  --primaryColor: #e2e2e2;
+  --primaryColor: #e2e2e2c1;
 }
 
 body {
@@ -27,6 +27,7 @@ main {
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin: 50px 6px 30px;
+  color: var(--primaryColor)
 }
 
 #buttons {
@@ -36,7 +37,7 @@ main {
 button {
   background: none;
   border: 0;
-  color: rgba(255, 255, 255, 0.5); 
+  color: var(--primaryColor); 
   padding: 0 20px;
   border-radius: 5px;
   font-family: 'Roboto Mono', monospace;
@@ -67,7 +68,7 @@ button {
 #focus-error {
   position: absolute;
   inset: 0;
-  padding-top: 35px;
+  padding-top: 48px;
   text-align: center;
 }
 
