@@ -80,11 +80,15 @@ document.getElementById("game").addEventListener("keydown", e => {
       allLetters.forEach(letter => {
         if (letter.className.indexOf("incorrect") !== -1) allCorrectFlag = false;
       })
-      addClass(currWord, allCorrectFlag ? "": "error")
+      if (allCorrectFlag) {
+        removeClass(currWord, "error")
+      } else {
+        addClass(currWord, "error")
+      }
 
     }
 
-    addClass(currWord, "typed")
+    if (currWord.className.indexOf("typed") === -1) addClass(currWord, "typed")
 
     removeClass(currWord, "current")
     addClass(currWord.nextSibling, "current")
@@ -95,14 +99,33 @@ document.getElementById("game").addEventListener("keydown", e => {
   }
 
   if (key === "Backspace") {
-    if (currLetter && currLetter.previousSibling !== null) {
+    const isFirstLetter = currLetter === currWord.firstChild
+
+    // is first letter, backspace to prev incorrect word
+    if (currWord.previousSibling && currWord.previousSibling.className.indexOf("error") !== -1 && isFirstLetter) {
+      removeClass(currWord, "current")
+      addClass(currWord.previousSibling, "current")
+      
+      removeClass(currLetter, "current")
+      addClass(currWord.previousSibling.lastChild, "current")
+      removeClass(currWord.previousSibling.lastChild, "incorrect")
+      removeClass(currWord.previousSibling.lastChild, "correct")
+
+      if (currWord.previousSibling.lastChild.className.indexOf("extra") !== -1) {
+        currWord.previousSibling.lastChild.remove();
+      }
+    }
+
+    // not the first letter
+    if (currLetter && !isFirstLetter) {
+      // move back one letter, remove incorrect/correct class
       removeClass(currLetter, "current")
       removeClass(currLetter.previousSibling, "incorrect")
       removeClass(currLetter.previousSibling, "correct")
       addClass(currLetter.previousSibling, "current")
     }
-    // backspace on last letter
-    // select last letter (last child on currWord)
+
+    // backspace on last letter, select last letter (last child on currWord)
     if (currLetter === null) {
       // remove correct/incorrect class on last letter
       removeClass(currWord.lastChild, "incorrect")
@@ -113,19 +136,12 @@ document.getElementById("game").addEventListener("keydown", e => {
       // remove extra characters 
       if (currWord.lastChild.className.indexOf("extra") !== -1) {
         currWord.lastChild.remove();
-      }
-
+      } 
     }
-    // backspace to prev incorrect word
-    if (currWord.previousSibling && currWord.previousSibling.className.indexOf("error" !== -1) && currLetter === currWord.firstChild) {
-      console.log("asfd")
-      removeClass(currWord, "current")
-      addClass(currWord.previousSibling, "current")
 
-      removeClass(currLetter, "current")
-      addClass(currWord.previousSibling.lastChild, "current")
-      removeClass(currWord.previousSibling.lastChild, "incorrect")
-      removeClass(currWord.previousSibling.lastChild, "correct")
+    // remove extra character after space has been pressed
+    if (currLetter && currLetter.className.indexOf("extra") !== -1) {
+      currLetter.remove();
     }
 
   }
