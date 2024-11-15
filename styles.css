@@ -112,3 +112,13 @@ button {
 #game:focus #cursor {
   display: block;
 }
+
+#game.over #words{
+  opacity: 0.5;;
+  filter: blur(0px);
+}
+
+#game.over:focus #cursor,
+#game.over #focus-error{
+  display: none;
+}

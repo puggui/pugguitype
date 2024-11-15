@@ -54,7 +54,8 @@ function newGame(textLen, arr) {
 }
 
 function gameOver() {
-  
+  clearInterval(window.timer)
+  addClass(document.getElementById("game"), "over")
 }
 
 document.getElementById("game").addEventListener("keydown", e => {
@@ -63,7 +64,13 @@ document.getElementById("game").addEventListener("keydown", e => {
   const currWord = document.querySelector(".word.current");
   const expected = currLetter?.innerHTML || " ";
   const isLetter = key.length === 1 && key !== " "
+  
+  // lock game if game over
+  if (document.querySelector("#game.over")) {
+    return;
+  }
 
+  // timer
   if (!window.timer && isLetter) {
     window.timer = setInterval(() => {
       if (!window.gameStart) {
