@@ -1,3 +1,8 @@
+const gameTime = 30;
+// create timer property on window object
+window.timer = null;
+window.gameStart = null
+
 async function getJson(filePath) {
   let res = await fetch(filePath)
   if (res.ok) return await res.json()
@@ -44,6 +49,12 @@ function newGame(textLen, arr) {
   addClass(document.querySelector(".word"), "current");
   addClass(document.querySelector(".letter"), "current");
   
+  // reset window.timer every time newGame() is called
+  window.timer = null;
+}
+
+function gameOver() {
+  
 }
 
 document.getElementById("game").addEventListener("keydown", e => {
@@ -51,8 +62,24 @@ document.getElementById("game").addEventListener("keydown", e => {
   const currLetter = document.querySelector(".letter.current");
   const currWord = document.querySelector(".word.current");
   const expected = currLetter?.innerHTML || " ";
+  const isLetter = key.length === 1 && key !== " "
+
+  if (!window.timer && isLetter) {
+    window.timer = setInterval(() => {
+      if (!window.gameStart) {
+        window.gameStart = (new Date()).getTime();
+      }      
+      const currTime = (new Date()).getTime();
+      const timePassedms = currTime - window.gameStart
+      const secLeft = gameTime - Math.floor(timePassedms/1000)
+      if (secLeft <= 0) {
+        gameOver();
+      }
+      document.getElementById("info").innerHTML = secLeft;
+    }, 1000)
+  }
   
-  if (key.length === 1 && key !== " ") {
+  if (isLetter) {
     if (currLetter) {
       addClass(currLetter, key === expected ? "correct": "incorrect")
       removeClass(currLetter, "current")
@@ -64,7 +91,6 @@ document.getElementById("game").addEventListener("keydown", e => {
       currWord.appendChild(incorrectLetter)
     }
   } 
-
 
   if (e.code === "Space") {
     if (expected !== " ") {
@@ -85,7 +111,6 @@ document.getElementById("game").addEventListener("keydown", e => {
       } else {
         addClass(currWord, "error")
       }
-
     }
 
     if (currWord.className.indexOf("typed") === -1) addClass(currWord, "typed")
@@ -143,15 +168,13 @@ document.getElementById("game").addEventListener("keydown", e => {
     if (currLetter && currLetter.className.indexOf("extra") !== -1) {
       currLetter.remove();
     }
-
   }
 
-  // scroll down
+  // scrolling line
   if (currWord.getBoundingClientRect().top > 250) {
     const words = document.getElementById("words")
     const margin = parseInt(words.style.marginTop || "0px")
     words.style.marginTop = (margin - 36.5) + "px"
-
   }
 
   // move cursor
