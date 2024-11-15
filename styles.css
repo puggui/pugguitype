@@ -47,12 +47,12 @@ button {
 .word{
   display: inline-block;
   font-family: 'Roboto Mono', monospace;
-  margin: 6px 5px;
-  font-size: 24px;
+  margin: 5px 5px;
+  font-size: 20px;
 }
 
 #game {
-  height: 144px;
+  height: 109.5px;
   overflow: hidden;
   position: relative;
 }

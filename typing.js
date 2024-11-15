@@ -146,6 +146,14 @@ document.getElementById("game").addEventListener("keydown", e => {
 
   }
 
+  // scroll down
+  if (currWord.getBoundingClientRect().top > 250) {
+    const words = document.getElementById("words")
+    const margin = parseInt(words.style.marginTop || "0px")
+    words.style.marginTop = (margin - 36.5) + "px"
+
+  }
+
   // move cursor
   const nextLetter = document.querySelector('.letter.current');
   const nextWord = document.querySelector('.word.current');
