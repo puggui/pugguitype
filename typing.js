@@ -41,6 +41,14 @@ function getWord(arr) {
   return newWord
 }
 
+function moveCursor() {
+  const nextLetter = document.querySelector('.letter.current');
+  const nextWord = document.querySelector('.word.current');
+  const cursor = document.getElementById('cursor');
+  cursor.style.top = (nextLetter || nextWord).getBoundingClientRect().top + 2 + 'px';
+  cursor.style.left = (nextLetter || nextWord).getBoundingClientRect()[nextLetter ? 'left' : 'right'] + 'px';
+}
+
 function newGame(textLen, arr) {
   document.getElementById("words").innerHTML = "";
   for (i=0; i<textLen; i++) {
@@ -50,7 +58,18 @@ function newGame(textLen, arr) {
   addClass(document.querySelector(".letter"), "current");
   
   // reset window.timer every time newGame() is called
+  removeClass(document.getElementById("game"), "over")
+  clearInterval(window.timer)
   window.timer = null;
+  window.gameStart = null;
+  document.getElementById("info").innerHTML = `${gameTime}`;
+
+  // reset margin
+  const words = document.getElementById("words")
+  const margin = parseInt(words.style.marginTop || "0px")
+  words.style.marginTop = "0px"
+  // reset cursor
+  moveCursor();
 }
 
 function gameOver() {
@@ -78,6 +97,7 @@ function getStats() {
   return [WPM, accuracy]
 }
 
+
 document.getElementById("game").addEventListener("keydown", e => {
   let key = e.key;
   const currLetter = document.querySelector(".letter.current");
@@ -103,6 +123,7 @@ document.getElementById("game").addEventListener("keydown", e => {
       if (secLeft <= 0) {
         console.log("game over!!!")
         gameOver();
+        return;
       }
     }, 1000)
   }
@@ -203,11 +224,15 @@ document.getElementById("game").addEventListener("keydown", e => {
   }
 
   // move cursor
-  const nextLetter = document.querySelector('.letter.current');
-  const nextWord = document.querySelector('.word.current');
-  const cursor = document.getElementById('cursor');
-  cursor.style.top = (nextLetter || nextWord).getBoundingClientRect().top + 2 + 'px';
-  cursor.style.left = (nextLetter || nextWord).getBoundingClientRect()[nextLetter ? 'left' : 'right'] + 'px';
+  moveCursor();
+})
+
+
+document.getElementById("new-game-btn").addEventListener("click", () => {
+  main();
+}) 
+document.getElementById("game").addEventListener("keydown", e => {
+  if (e.key === "Tab") main();
 })
 
 main();

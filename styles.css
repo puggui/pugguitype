@@ -30,7 +30,7 @@ main {
   color: var(--primaryColor)
 }
 
-#buttons {
+#new-game-btn {
   text-align: right;
 }
 
