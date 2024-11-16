@@ -120,7 +120,8 @@ document.getElementById("game").addEventListener("keydown", e => {
     }
   } 
 
-  if (e.code === "Space") {
+  if (e.code === "Space" && currLetter !== currWord.firstChild) {
+    // if is the first letter, dont allow space to invalidate entire word
     if (expected !== " ") {
       const lettersToInvalidate = [...document.querySelectorAll('.word.current .letter:not(.correct)')];
       lettersToInvalidate.forEach(letter => {
@@ -140,15 +141,11 @@ document.getElementById("game").addEventListener("keydown", e => {
         addClass(currWord, "error")
       }
     }
-
     if (currWord.className.indexOf("typed") === -1) addClass(currWord, "typed")
-
     removeClass(currWord, "current")
     addClass(currWord.nextSibling, "current")
-    if (currLetter) {
-      removeClass(currLetter, 'current');
-    }
-    addClass(currWord.nextSibling.firstChild, 'current');
+    if (currLetter) removeClass(currLetter, 'current');
+    addClass(currWord.nextSibling.firstChild, 'current'); 
   }
 
   if (key === "Backspace") {
