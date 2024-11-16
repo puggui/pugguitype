@@ -56,6 +56,26 @@ function newGame(textLen, arr) {
 function gameOver() {
   clearInterval(window.timer)
   addClass(document.getElementById("game"), "over")
+  const stats = [...getStats()]
+  document.getElementById("info").innerHTML = `WPM: ${stats[0]}, Accuracy = ${Math.floor(stats[1])}%`;
+}
+
+function getStats() {
+  const words = [...document.querySelectorAll(".typed")];
+  let correctLettersCount = 0;
+  let incorrectLettersCount = 0;
+  words.forEach(word => {
+    letters = [...word.children]
+    letters.forEach(letter => {
+      if (letter.classList[1] === "correct") correctLettersCount++;
+      if (letter.classList[1] === "incorrect") incorrectLettersCount++;
+    })
+  })
+
+  const WPM = (correctLettersCount+incorrectLettersCount)/5 * (60/gameTime)
+  const accuracy = correctLettersCount * 100 / (correctLettersCount + incorrectLettersCount)
+
+  return [WPM, accuracy]
 }
 
 document.getElementById("game").addEventListener("keydown", e => {
@@ -79,10 +99,11 @@ document.getElementById("game").addEventListener("keydown", e => {
       const currTime = (new Date()).getTime();
       const timePassedms = currTime - window.gameStart
       const secLeft = gameTime - Math.floor(timePassedms/1000)
+      document.getElementById("info").innerHTML = secLeft;
       if (secLeft <= 0) {
+        console.log("game over!!!")
         gameOver();
       }
-      document.getElementById("info").innerHTML = secLeft;
     }, 1000)
   }
   
@@ -190,7 +211,6 @@ document.getElementById("game").addEventListener("keydown", e => {
   const cursor = document.getElementById('cursor');
   cursor.style.top = (nextLetter || nextWord).getBoundingClientRect().top + 2 + 'px';
   cursor.style.left = (nextLetter || nextWord).getBoundingClientRect()[nextLetter ? 'left' : 'right'] + 'px';
-
 })
 
 main();
