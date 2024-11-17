@@ -125,7 +125,6 @@ document.getElementById("game").addEventListener("keydown", e => {
       const secLeft = gameTime - Math.floor(timePassedms/1000)
       document.getElementById("info").innerHTML = secLeft;
       if (secLeft <= 0) {
-        console.log("game over!!!")
         gameOver();
         return;
       }
@@ -236,9 +235,12 @@ document.getElementById("new-game-btn").addEventListener("click", () => {
   removeClass(document.getElementById("game"), "refresh")
   main();
 }) 
-document.getElementById("game").addEventListener("keydown", e => {
-  removeClass(document.getElementById("game"), "refresh")
-  if (e.key === "Tab") main();
+window.addEventListener("keydown", e => {
+  if (e.key === "Tab") {
+    e.preventDefault();
+    removeClass(document.getElementById("game"), "refresh")
+    main();
+  }
 })
 
 main();

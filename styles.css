@@ -1,4 +1,4 @@
-/* @import url(https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600&display=swap); */
+@import url(https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600&display=swap);
 
 :root {
   --bgColor: #333;
@@ -9,7 +9,7 @@
 
 body {
   font-family: 'Roboto Mono', monospace;
-  font-family: monospace;
+  /* font-family: monospace; */
   background-color: var(--bgColor);
   color: var(--textPrimary);
   margin: 50px;
@@ -100,7 +100,7 @@ button {
 }
 
 .refresh {
-  animation: blink 1s;
+  animation: blink 0.5s;
 }
 
 #cursor {
