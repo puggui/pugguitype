@@ -50,6 +50,10 @@ function moveCursor() {
 }
 
 function newGame(textLen, arr) {
+  // add refresh animation
+  addClass(document.getElementById("game"), "refresh")
+  
+  // get words for typing game
   document.getElementById("words").innerHTML = "";
   for (i=0; i<textLen; i++) {
     document.getElementById("words").innerHTML += formatWord(getWord(arr))
@@ -229,9 +233,11 @@ document.getElementById("game").addEventListener("keydown", e => {
 
 
 document.getElementById("new-game-btn").addEventListener("click", () => {
+  removeClass(document.getElementById("game"), "refresh")
   main();
 }) 
 document.getElementById("game").addEventListener("keydown", e => {
+  removeClass(document.getElementById("game"), "refresh")
   if (e.key === "Tab") main();
 })
 
