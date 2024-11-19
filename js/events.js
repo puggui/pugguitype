@@ -92,6 +92,15 @@ export function handleKeydown(e, gameTime, gameOver, moveCursor) {
 
   if (key === "Backspace") {
     const isFirstLetter = currLetter === currWord.firstChild
+  
+    // delete entire word with ALT+Backspace or Meta+Backspace
+    if (e.metaKey || e.altKey) {      
+      const letters = [...document.querySelectorAll('.word.current .letter')];
+      letters.forEach(letter => {
+        letter.classList = "letter"
+      });
+      addClass(currWord.firstChild, "current")
+    }
 
     // is first letter, backspace to prev incorrect word
     if (currWord.previousSibling && currWord.previousSibling.className.indexOf("error") !== -1 && isFirstLetter) {
