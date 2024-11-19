@@ -16,10 +16,11 @@ export function newGame(textLen, arr, gameTime) {
   
   // reset state
   removeClass(document.getElementById("game"), "over")
+  document.getElementById("stats").classList = "hide"
   clearInterval(window.timer)
   window.timer = null;
   window.gameStart = null;
-  document.getElementById("info").innerHTML = `${gameTime}`;
+  document.getElementById("time").innerHTML = `${gameTime}`;
   document.getElementById("words").style.marginTop = "0px"
   
   // reset cursor
@@ -30,7 +31,10 @@ export function gameOver(gameTime) {
   clearInterval(window.timer)
   addClass(document.getElementById("game"), "over")
   const stats = [...getStats(gameTime)]
-  document.getElementById("info").innerHTML = `WPM: ${Math.round(stats[0])}, Accuracy = ${Math.floor(stats[1])}%`;
+
+  // display stats
+  document.getElementById("stats").classList = "show"
+  document.getElementById("stats").innerHTML = `WPM: ${Math.round(stats[0])}, Accuracy = ${Math.floor(stats[1])}%`;
 }
 
 export function getWord(arr) {

@@ -41,7 +41,7 @@ export function handleKeydown(e, gameTime, gameOver, moveCursor) {
       const currTime = (new Date()).getTime();
       const timePassedms = currTime - window.gameStart;
       const secLeft = gameTime - Math.floor(timePassedms/1000);
-      document.getElementById("info").innerHTML = secLeft;
+      document.getElementById("time").innerHTML = secLeft;
       if (secLeft <= 0) {
         gameOver(gameTime);
         return;

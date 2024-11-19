@@ -129,3 +129,17 @@ button {
 #game.over #focus-error{
   display: none;
 }
+
+#stats {
+  margin: 100px 6px 6px;
+  text-align: center;
+  color: var(--primaryColor);
+}
+
+.show {
+  display: block;
+}
+
+.hide {
+  display: none;
+}
