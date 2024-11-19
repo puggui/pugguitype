@@ -148,7 +148,7 @@ export function handleKeydown(e, gameTime, gameOver, moveCursor) {
   }
 
   // scrolling line
-  if (currWord.getBoundingClientRect().top > 250) {
+  if (currWord.getBoundingClientRect().top > 400) {
     const words = document.getElementById("words");
     const margin = parseInt(words.style.marginTop || "0px");
     words.style.marginTop = (margin - 36.5) + "px";
