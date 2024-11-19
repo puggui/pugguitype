@@ -1,9 +1,9 @@
 import { addClass, removeClass, moveCursor } from './utils.js';
 import { gameOver } from './game.js';
 
-export function initEvents(main, gameTime) {
+export function initEvents(main) {
   document.getElementById("game").addEventListener("keydown", e => {
-    handleKeydown(e, gameTime, gameOver, moveCursor);
+    handleKeydown(e, gameOver, moveCursor);
   });
     
   document.getElementById("new-game-btn").addEventListener("click", () => {
@@ -18,9 +18,34 @@ export function initEvents(main, gameTime) {
       main();
     }
   });
+
+  // change timer duration
+  document.querySelector(".timer-60").addEventListener("click", () => {
+    window.gameTime = 60;
+    addClass(document.querySelector(".timer-60"), "active")
+    document.querySelector(".timer-30").classList = "timer-30"
+    document.querySelector(".timer-15").classList = "timer-15";
+    document.getElementById("time").innerHTML = `${window.gameTime}`;
+  })
+
+  document.querySelector(".timer-30").addEventListener("click", () => {
+    window.gameTime = 30;
+    addClass(document.querySelector(".timer-30"), "active")
+    document.querySelector(".timer-15").classList = "timer-15"
+    document.querySelector(".timer-60").classList = "timer-60";
+    document.getElementById("time").innerHTML = `${window.gameTime}`;
+  })
+
+  document.querySelector(".timer-15").addEventListener("click", () => {
+    window.gameTime = 15;
+    addClass(document.querySelector(".timer-15"), "active")
+    document.querySelector(".timer-30").classList = "timer-30"
+    document.querySelector(".timer-60").classList = "timer-60";
+    document.getElementById("time").innerHTML = `${window.gameTime}`;
+  })
 }
 
-export function handleKeydown(e, gameTime, gameOver, moveCursor) {
+export function handleKeydown(e, gameOver, moveCursor) {
   let key = e.key;
   const currLetter = document.querySelector(".letter.current");
   const currWord = document.querySelector(".word.current");
@@ -40,10 +65,10 @@ export function handleKeydown(e, gameTime, gameOver, moveCursor) {
       }      
       const currTime = (new Date()).getTime();
       const timePassedms = currTime - window.gameStart;
-      const secLeft = gameTime - Math.floor(timePassedms/1000);
+      const secLeft = window.gameTime - Math.floor(timePassedms/1000);
       document.getElementById("time").innerHTML = secLeft;
       if (secLeft <= 0) {
-        gameOver(gameTime);
+        gameOver();
         return;
       }
     }, 1000)
@@ -148,7 +173,7 @@ export function handleKeydown(e, gameTime, gameOver, moveCursor) {
   }
 
   // scrolling line
-  if (currWord.getBoundingClientRect().top > 400) {
+  if (currWord.getBoundingClientRect().top > 430) {
     const words = document.getElementById("words");
     const margin = parseInt(words.style.marginTop || "0px");
     words.style.marginTop = (margin - 36.5) + "px";

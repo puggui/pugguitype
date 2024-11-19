@@ -13,10 +13,14 @@ body {
   background-color: var(--bgColor);
   color: var(--textPrimary);
   margin: 50px;
+  /* prevent user select */
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 
 h1 {
-  color: var(--primaryColor);
+  color: var(--textPrimary);
   font-size: 24px;
   font-weight: 500;
 }
@@ -29,7 +33,7 @@ main {
 #header {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  margin: 200px 6px 30px;
+  margin: 150px 6px 30px;
   color: var(--primaryColor)
 }
 
@@ -142,4 +146,18 @@ button {
 
 .hide {
   display: none;
+}
+
+#config button {
+  font-size: 12px;
+  color: var(--textSecondary);
+}
+
+#config {
+  max-width: fit-content;
+  margin: 50px auto;
+}
+
+#config .active {
+  color: var(--primaryColor);
 }

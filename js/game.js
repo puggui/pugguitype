@@ -1,6 +1,6 @@
 import { addClass, removeClass, formatWord, moveCursor } from './utils.js'
 
-export function newGame(textLen, arr, gameTime) {
+export function newGame(textLen, arr) {
   // add refresh animation
   addClass(document.getElementById("game"), "refresh")
   
@@ -20,17 +20,17 @@ export function newGame(textLen, arr, gameTime) {
   clearInterval(window.timer)
   window.timer = null;
   window.gameStart = null;
-  document.getElementById("time").innerHTML = `${gameTime}`;
+  document.getElementById("time").innerHTML = `${window.gameTime}`;
   document.getElementById("words").style.marginTop = "0px"
   
   // reset cursor
   moveCursor();
 }
 
-export function gameOver(gameTime) {
+export function gameOver() {
   clearInterval(window.timer)
   addClass(document.getElementById("game"), "over")
-  const stats = [...getStats(gameTime)]
+  const stats = [...getStats()]
 
   // display stats
   document.getElementById("stats").classList = "show"
@@ -48,7 +48,7 @@ export function getWord(arr) {
   return newWord
 }
 
-function getStats(gameTime) {
+function getStats() {
   const words = [...document.querySelectorAll(".typed")];
   let correctLettersCount = 0;
   let incorrectLettersCount = 0;
@@ -60,7 +60,7 @@ function getStats(gameTime) {
     })
   })
 
-  const WPM = (correctLettersCount+incorrectLettersCount)/5 * (60/gameTime)
+  const WPM = (correctLettersCount+incorrectLettersCount)/5 * (60/window.gameTime)
   const accuracy = correctLettersCount * 100 / (correctLettersCount + incorrectLettersCount)
 
   return [WPM, accuracy]
