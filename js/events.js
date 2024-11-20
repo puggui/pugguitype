@@ -61,7 +61,9 @@ export function initEvents(main) {
   // custom button behavior 
   document.querySelector(".timer-custom").addEventListener("click", () => {
     document.getElementById("popup").classList = "show";
+    document.getElementById("custom-test-duration").value = window.gameTime;
   })
+
 }
 
 export function handleKeydown(e, gameOver, moveCursor) {
@@ -194,7 +196,7 @@ export function handleKeydown(e, gameOver, moveCursor) {
   // scrolling line
   if (currWord.getBoundingClientRect().top > 430) {
     const words = document.getElementById("words");
-    const margin = parseInt(words.style.marginTop || "0px");
+    const margin = parseFloat(words.style.marginTop || "0px");
     words.style.marginTop = (margin - 36.5) + "px";
   }
 

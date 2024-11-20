@@ -10,7 +10,7 @@
   <title>pugguitype</title>
 </head>
 <body>
-  <div id="popup">
+  <div id="popup" class="hide">
     <div class="bg"></div>
     <div class="modal">
       <div class="title">test duration</div>
@@ -21,10 +21,20 @@
 
   <h1>pugguitype</h1>
   <div id="config">
-    <button class="timer-60">60</button>
-    <button class="timer-30 active">30</button>
-    <button class="timer-15">15</button>
-    <button class="timer-custom">custom</button>
+    <div id="timer-num">
+      <button class="timer-num-btn active">time</button>
+      <button class="timer-60">60</button>
+      <button class="timer-30 active">30</button>
+      <button class="timer-15">15</button>
+      <button class="timer-custom">custom</button>
+    </div>
+    <div id="word-num">
+      <button class="word-num-btn">word</button>
+      <button class="word-10">10</button>
+      <button class="word-25">25</button>
+      <button class="word-50">50</button>
+      <button class="word-custom">custom</button>
+    </div>
   </div>
   <div id="header">
     <div id="time"></div>

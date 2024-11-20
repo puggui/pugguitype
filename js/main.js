@@ -6,11 +6,12 @@ import { initEvents } from "./events.js"
 window.timer = null;
 window.gameStart = null;
 window.gameTime = 30;
+window.wordNum = 500;
 
 async function main() {
   try {
     const file = await getJson("./data/english_1k.json");
-    newGame(100, file.words);
+    newGame(window.wordNum, file.words);
   } catch (error) {
     console.error(error);
   }
