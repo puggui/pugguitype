@@ -1,9 +1,10 @@
 @import url(https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap);
 
 :root {
-  --bgColor: #333;
+  --bgColor: #313231;
+  --subColor: #3b3b3b;
   --textPrimary: #fff;
-  --textSecondary: #666;
+  --textSecondary: #5d6263;;
   --primaryColor: #e2e2e2c1;
 }
 
@@ -160,4 +161,58 @@ button {
 
 #config .active {
   color: var(--primaryColor);
+}
+
+#popup .bg {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 100;
+}
+
+#popup .modal {
+  position: absolute;
+  top: calc(50% - 150px);
+  left: calc(50% - 200px);
+  width: 400px;
+  height: 260px;
+  background-color: var(--bgColor);
+  border-radius: 10px;
+  border: 3px solid var(--subColor);
+  z-index: 1001;
+  padding: 30px;
+  display: grid;
+}
+#popup .title {
+  color: var(--textSecondary);
+  font-size: 20px;
+}
+
+#popup input {
+  background-color: var(--subColor);
+  border-radius: 10px;
+  border: 3px solid var(--subColor);
+  height: 30px;
+  padding: 3px 10px;
+  color: var(--textPrimary);
+  font-family: 'Roboto Mono', monospace;
+}
+
+#popup input:focus {
+  outline: 1.5px solid var(--textPrimary);
+}
+
+#popup button {
+  background-color: var(--subColor);
+  border-radius: 10px;
+  border: 3px solid var(--subColor);
+  height: 39px;
+}
+
+#popup button:hover {
+  background-color: var(--textPrimary);
+  color: var(--textSecondary);
 }

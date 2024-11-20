@@ -25,6 +25,7 @@ export function initEvents(main) {
     addClass(document.querySelector(".timer-60"), "active")
     document.querySelector(".timer-30").classList = "timer-30"
     document.querySelector(".timer-15").classList = "timer-15";
+    document.querySelector(".timer-custom").classList = "timer-custom"
     document.getElementById("time").innerHTML = `${window.gameTime}`;
   })
 
@@ -33,6 +34,7 @@ export function initEvents(main) {
     addClass(document.querySelector(".timer-30"), "active")
     document.querySelector(".timer-15").classList = "timer-15"
     document.querySelector(".timer-60").classList = "timer-60";
+    document.querySelector(".timer-custom").classList = "timer-custom"
     document.getElementById("time").innerHTML = `${window.gameTime}`;
   })
 
@@ -41,7 +43,24 @@ export function initEvents(main) {
     addClass(document.querySelector(".timer-15"), "active")
     document.querySelector(".timer-30").classList = "timer-30"
     document.querySelector(".timer-60").classList = "timer-60";
+    document.querySelector(".timer-custom").classList = "timer-custom"
     document.getElementById("time").innerHTML = `${window.gameTime}`;
+  })
+
+  // custom time
+  document.querySelector("#popup button").addEventListener("click", () => {
+    window.gameTime = document.getElementById("custom-test-duration").value;
+    addClass(document.querySelector(".timer-custom"), "active")
+    document.querySelector(".timer-15").classList = "timer-15";
+    document.querySelector(".timer-30").classList = "timer-30"
+    document.querySelector(".timer-60").classList = "timer-60";
+    document.getElementById("time").innerHTML = `${window.gameTime}`;
+    document.getElementById("popup").classList = "hide";
+  })
+
+  // custom button behavior 
+  document.querySelector(".timer-custom").addEventListener("click", () => {
+    document.getElementById("popup").classList = "show";
   })
 }
 
