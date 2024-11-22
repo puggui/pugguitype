@@ -20,8 +20,13 @@ export function newGame(textLen, arr) {
   clearInterval(window.timer)
   window.timer = null;
   window.gameStart = null;
-  document.getElementById("time").innerHTML = `${window.gameTime}`;
+  window.wordCount = 0;
   document.getElementById("words").style.marginTop = "0px"
+  if (window.isWordTest) {
+    document.getElementById("count-down").innerHTML = `${window.wordCount}/${window.wordNum}`;
+  } else {
+    document.getElementById("count-down").innerHTML = `${window.gameTime}`;
+  }
   
   // reset cursor
   moveCursor();

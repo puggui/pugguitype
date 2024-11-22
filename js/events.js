@@ -19,49 +19,81 @@ export function initEvents(main) {
     }
   });
 
-  // change timer duration
-  document.querySelector(".timer-60").addEventListener("click", () => {
-    window.gameTime = 60;
-    addClass(document.querySelector(".timer-60"), "active")
-    document.querySelector(".timer-30").classList = "timer-30"
-    document.querySelector(".timer-15").classList = "timer-15";
-    document.querySelector(".timer-custom").classList = "timer-custom"
-    document.getElementById("time").innerHTML = `${window.gameTime}`;
-  })
 
-  document.querySelector(".timer-30").addEventListener("click", () => {
-    window.gameTime = 30;
-    addClass(document.querySelector(".timer-30"), "active")
-    document.querySelector(".timer-15").classList = "timer-15"
-    document.querySelector(".timer-60").classList = "timer-60";
-    document.querySelector(".timer-custom").classList = "timer-custom"
-    document.getElementById("time").innerHTML = `${window.gameTime}`;
-  })
+  const timeDict = {
+    "timer-60": 60,
+    "timer-30": 30,
+    "timer-15": 15,
+    "timer-custom": window.gameTime,
+  }
+  const wordDict = {
+    "word-50": 50,
+    "word-25": 25,
+    "word-10": 10,
+    "word-custom": window.wordNum,
+  }
 
-  document.querySelector(".timer-15").addEventListener("click", () => {
-    window.gameTime = 15;
-    addClass(document.querySelector(".timer-15"), "active")
-    document.querySelector(".timer-30").classList = "timer-30"
-    document.querySelector(".timer-60").classList = "timer-60";
-    document.querySelector(".timer-custom").classList = "timer-custom"
-    document.getElementById("time").innerHTML = `${window.gameTime}`;
-  })
+  function updateTimer(className, time) {
+    window.gameTime = time;
+    window.isWordTest = null;
+    window.wordNum = 100;
+    Object.keys(timeDict).forEach(key => { document.querySelector(`.${key}`).classList = key })
+    Object.keys(wordDict).forEach(key => { document.querySelector(`.${key}`).classList = key })
+    addClass(document.querySelector(`.${className}`), "active")
+    document.getElementById("count-down").innerHTML = `${window.gameTime}`;
+    main();
+  };
 
-  // custom time
+  function updateWords(className, words) {
+    window.wordNum = words;
+    window.isWordTest = true;
+    Object.keys(timeDict).forEach(key => { document.querySelector(`.${key}`).classList = key })
+    Object.keys(wordDict).forEach(key => { document.querySelector(`.${key}`).classList = key })
+    addClass(document.querySelector(`.${className}`), "active")
+    main();
+  };
+  
+  // Add event listeners for predefined timers
+  Object.entries(timeDict).forEach(([className, time]) => {
+    document.querySelector(`.${className}`).addEventListener("click", () => {
+      updateTimer(className, time);
+    });
+  });
+
+  Object.entries(wordDict).forEach(([className, word]) => {
+    document.querySelector(`.${className}`).addEventListener("click", () => {
+      updateWords(className, word);
+    });
+  });
+
+  // custom popup
   document.querySelector("#popup button").addEventListener("click", () => {
-    window.gameTime = document.getElementById("custom-test-duration").value;
-    addClass(document.querySelector(".timer-custom"), "active")
-    document.querySelector(".timer-15").classList = "timer-15";
-    document.querySelector(".timer-30").classList = "timer-30"
-    document.querySelector(".timer-60").classList = "timer-60";
-    document.getElementById("time").innerHTML = `${window.gameTime}`;
+    Object.keys(timeDict).forEach(key => { document.querySelector(`.${key}`).classList = key })
+    Object.keys(wordDict).forEach(key => { document.querySelector(`.${key}`).classList = key })
+    if (window.isWordTest) {
+      window.wordNum = document.getElementById("custom-test-duration").value;
+      addClass(document.querySelector(".word-custom"), "active")
+    } else {
+      window.gameTime = document.getElementById("custom-test-duration").value;
+      addClass(document.querySelector(".timer-custom"), "active")
+      document.getElementById("count-down").innerHTML = `${window.gameTime}`;
+    }
     document.getElementById("popup").classList = "hide";
+    main();
   })
 
-  // custom button behavior 
+  // custom timer  button behavior 
   document.querySelector(".timer-custom").addEventListener("click", () => {
+    document.querySelector("#popup .title").innerHTML = "custom test duration"
     document.getElementById("popup").classList = "show";
     document.getElementById("custom-test-duration").value = window.gameTime;
+  })
+
+  // custom word  button behavior 
+  document.querySelector(".word-custom").addEventListener("click", () => {
+    document.querySelector("#popup .title").innerHTML = "custom word amount"
+    document.getElementById("popup").classList = "show";
+    document.getElementById("custom-test-duration").value = window.wordNum;
   })
 
 }
@@ -70,16 +102,49 @@ export function handleKeydown(e, gameOver, moveCursor) {
   let key = e.key;
   const currLetter = document.querySelector(".letter.current");
   const currWord = document.querySelector(".word.current");
-  const expected = currLetter?.innerHTML || " ";
+  const lastLetter = document.getElementById("words").lastChild.lastChild;
+  const lastWord = document.getElementById("words").lastChild;
   const isLetter = key.length === 1 && key !== " "
-  
+  const expected = currLetter?.innerHTML || " ";
+
   // lock game if game over
   if (document.querySelector("#game.over")) {
     return;
   }
+  
+  // word test
+  if (window.isWordTest) {
+    if (expected === " "  && key === " ") {
+      if (currWord && currWord.className.indexOf("typed") === -1) {
+        window.wordCount++;
+        document.getElementById("count-down").innerHTML = `${window.wordCount}/${window.wordNum}`;
+      }
+    }
+    // game over when typed last letter
+    if (currWord.nextSibling === null && currLetter === lastLetter) {
+      window.wordCount++;
+      document.getElementById("count-down").innerHTML = `${window.wordCount}/${window.wordNum}`;
+      addClass(currLetter, key === expected ? "correct": "incorrect")
+      removeClass(currWord, "current");
+      addClass(currWord, "typed");
+      gameOver();
+      return;
+    }
+  }
+  
+  // word test timer
+  if (window.isWordTest && !window.timer && isLetter) {
+    window.timer = setInterval(() => {
+      if (!window.gameStart) {
+        window.gameStart = (new Date()).getTime();
+      }      
+      const currTime = (new Date()).getTime();
+      window.gameTime = Math.floor((currTime - window.gameStart)/1000)
+    }, 1000)
+  }
 
-  // timer
-  if (!window.timer && isLetter) {
+  // timed test timer
+  if (!window.isWordTest && !window.timer && isLetter) {
     window.timer = setInterval(() => {
       if (!window.gameStart) {
         window.gameStart = (new Date()).getTime();
@@ -87,7 +152,7 @@ export function handleKeydown(e, gameOver, moveCursor) {
       const currTime = (new Date()).getTime();
       const timePassedms = currTime - window.gameStart;
       const secLeft = window.gameTime - Math.floor(timePassedms/1000);
-      document.getElementById("time").innerHTML = secLeft;
+      document.getElementById("count-down").innerHTML = secLeft;
       if (secLeft <= 0) {
         gameOver();
         return;
@@ -108,32 +173,27 @@ export function handleKeydown(e, gameOver, moveCursor) {
     }
   } 
 
-  if (e.code === "Space" && currLetter !== currWord.firstChild) {
-    // if is the first letter, dont allow space to invalidate entire word
-    if (expected !== " ") {
-      const lettersToInvalidate = [...document.querySelectorAll('.word.current .letter:not(.correct)')];
-      lettersToInvalidate.forEach(letter => {
-        addClass(letter, "incorrect")
-      })
-      addClass(currWord, "error");
-
+  if (e.code === "Space" && currLetter !== currWord.firstChild && expected === " ") {
+    // add error class to words with incorrect letter(s)
+    const allLetters = [...document.querySelectorAll('.word.current .letter')];
+    let allCorrectFlag = true
+    allLetters.forEach(letter => {
+      if (letter.className.indexOf("incorrect") !== -1) allCorrectFlag = false;
+    })
+    if (allCorrectFlag) {
+      removeClass(currWord, "error")
     } else {
-      const allLetters = [...document.querySelectorAll('.word.current .letter')];
-      let allCorrectFlag = true
-      allLetters.forEach(letter => {
-        if (letter.className.indexOf("incorrect") !== -1) allCorrectFlag = false;
-      })
-      if (allCorrectFlag) {
-        removeClass(currWord, "error")
-      } else {
-        addClass(currWord, "error")
-      }
+      addClass(currWord, "error")
     }
-    if (currWord.className.indexOf("typed") === -1) addClass(currWord, "typed")
+
+    // move current class to next word
+    // move current class to first letter of next word
     removeClass(currWord, "current")
-    addClass(currWord.nextSibling, "current")
-    if (currLetter) removeClass(currLetter, 'current');
-    addClass(currWord.nextSibling.firstChild, 'current'); 
+    if (currWord.nextSibling) {
+      addClass(currWord.nextSibling, "current")
+      addClass(currWord.nextSibling.firstChild, "current")
+    }
+    addClass(currWord, "typed")
   }
 
   if (key === "Backspace") {
@@ -143,6 +203,7 @@ export function handleKeydown(e, gameOver, moveCursor) {
     if (e.metaKey || e.altKey) {      
       const letters = [...document.querySelectorAll('.word.current .letter')];
       letters.forEach(letter => {
+        if (letter.className.indexOf("extra") !== -1) letter.remove();
         letter.classList = "letter"
       });
       addClass(currWord.firstChild, "current")

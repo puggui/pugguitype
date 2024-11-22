@@ -6,7 +6,9 @@ import { initEvents } from "./events.js"
 window.timer = null;
 window.gameStart = null;
 window.gameTime = 30;
-window.wordNum = 500;
+window.wordNum = 100;
+window.isWordTest = null;
+window.wordCount = 0;
 
 async function main() {
   try {
