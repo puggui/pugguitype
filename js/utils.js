@@ -4,13 +4,14 @@ export async function getJson(filePath) {
   throw new Error(`Error found: ${res.statusText}`)
 }
 
-export function addClass(el, name) {
-  el.className += " " + name;
+export function removeClass(element, className) {
+  if (element) element.classList.remove(className);
 }
 
-export function removeClass(el, name) {
-  el.className = el.className.replace(name, "")
+export function addClass(element, className) {
+  if (element) element.classList.add(className);
 }
+
 
 export function formatWord(word) {
   return `<div class="word">${word}</div>`

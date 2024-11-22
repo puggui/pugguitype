@@ -103,7 +103,6 @@ export function handleKeydown(e, gameOver, moveCursor) {
   const currLetter = document.querySelector(".letter.current");
   const currWord = document.querySelector(".word.current");
   const lastLetter = document.getElementById("words").lastChild.lastChild;
-  const lastWord = document.getElementById("words").lastChild;
   const isLetter = key.length === 1 && key !== " "
   const expected = currLetter?.innerHTML || " ";
 
@@ -193,21 +192,14 @@ export function handleKeydown(e, gameOver, moveCursor) {
       addClass(currWord.nextSibling, "current")
       addClass(currWord.nextSibling.firstChild, "current")
     }
-    addClass(currWord, "typed")
+    // add class typed if not already added
+    if (currWord.className.indexOf("typed") !== -1) {
+      addClass(currWord, "typed")
+    }
   }
 
   if (key === "Backspace") {
     const isFirstLetter = currLetter === currWord.firstChild
-  
-    // delete entire word with ALT+Backspace or Meta+Backspace
-    if (e.metaKey || e.altKey) {      
-      const letters = [...document.querySelectorAll('.word.current .letter')];
-      letters.forEach(letter => {
-        if (letter.className.indexOf("extra") !== -1) letter.remove();
-        letter.classList = "letter"
-      });
-      addClass(currWord.firstChild, "current")
-    }
 
     // is first letter, backspace to prev incorrect word
     if (currWord.previousSibling && currWord.previousSibling.className.indexOf("error") !== -1 && isFirstLetter) {
@@ -252,6 +244,23 @@ export function handleKeydown(e, gameOver, moveCursor) {
     if (currLetter && currLetter.className.indexOf("extra") !== -1) {
       currLetter.remove();
     }
+
+    // delete entire word with ALT+Backspace or Meta+Backspace
+    // theres a bug here idk where 
+    if (e.metaKey || e.altKey && expected) {  
+      removeClass(document.querySelector(".letter.current"), "current")   
+      const letters = [...document.querySelectorAll('.word.current .letter')];
+      letters.forEach(letter => {
+        if (letter.className.indexOf("extra") !== -1) letter.remove();
+        letter.classList = "letter"
+      });
+      if (isFirstLetter && currWord.previousSibling) {
+        addClass(currWord.previousSibling.firstChild, "current")
+      } else {
+        addClass(currWord.firstChild, "current")
+      }
+    }
+    
   }
 
   // scrolling line
