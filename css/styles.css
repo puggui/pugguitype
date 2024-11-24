@@ -65,7 +65,7 @@ main {
 #header {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  margin: 150px 6px 30px;
+  margin: 130px 6px 30px;
   color: var(--primaryColor)
 }
 
@@ -188,10 +188,19 @@ button {
 #config {
   max-width: fit-content;
   margin: 50px auto;
+  text-align: center;
 }
 
 #config .active {
   color: var(--primaryColor);
+}
+
+#alphabet {
+  margin-top: 10px;
+}
+
+#alphabet button {
+  padding: 2px;
 }
 
 #popup .bg {

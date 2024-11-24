@@ -1,6 +1,37 @@
 import { addClass, removeClass, moveCursor } from './utils.js';
 import { gameOver } from './game.js';
 
+const timeDict = {
+  "timer-60": 60,
+  "timer-30": 30,
+  "timer-15": 15,
+  "timer-custom": 30,
+}
+const wordDict = {
+  "word-50": 50,
+  "word-25": 25,
+  "word-10": 10,
+  "word-custom": 25,
+}
+
+function updateTimer(className, time) {
+  window.gameTime = time;
+  window.isWordTest = null;
+  window.wordNum = 100;
+  Object.keys(timeDict).forEach(key => { document.querySelector(`.${key}`).classList = key })
+  Object.keys(wordDict).forEach(key => { document.querySelector(`.${key}`).classList = key })
+  addClass(document.querySelector(`.${className}`), "active")
+  document.getElementById("count-down").innerHTML = `${window.gameTime}`;
+};
+
+function updateWords(className, words) {
+  window.wordNum = words;
+  window.isWordTest = true;
+  Object.keys(timeDict).forEach(key => { document.querySelector(`.${key}`).classList = key })
+  Object.keys(wordDict).forEach(key => { document.querySelector(`.${key}`).classList = key })
+  addClass(document.querySelector(`.${className}`), "active")
+};
+
 export function initEvents(main) {
   document.getElementById("game").addEventListener("keydown", e => {
     handleKeydown(e, gameOver, moveCursor);
@@ -18,51 +49,23 @@ export function initEvents(main) {
       main();
     }
   });
-
-
-  const timeDict = {
-    "timer-60": 60,
-    "timer-30": 30,
-    "timer-15": 15,
-    "timer-custom": window.gameTime,
-  }
-  const wordDict = {
-    "word-50": 50,
-    "word-25": 25,
-    "word-10": 10,
-    "word-custom": window.wordNum,
-  }
-
-  function updateTimer(className, time) {
-    window.gameTime = time;
-    window.isWordTest = null;
-    window.wordNum = 100;
-    Object.keys(timeDict).forEach(key => { document.querySelector(`.${key}`).classList = key })
-    Object.keys(wordDict).forEach(key => { document.querySelector(`.${key}`).classList = key })
-    addClass(document.querySelector(`.${className}`), "active")
-    document.getElementById("count-down").innerHTML = `${window.gameTime}`;
-    main();
-  };
-
-  function updateWords(className, words) {
-    window.wordNum = words;
-    window.isWordTest = true;
-    Object.keys(timeDict).forEach(key => { document.querySelector(`.${key}`).classList = key })
-    Object.keys(wordDict).forEach(key => { document.querySelector(`.${key}`).classList = key })
-    addClass(document.querySelector(`.${className}`), "active")
-    main();
-  };
   
   // Add event listeners for predefined timers
   Object.entries(timeDict).forEach(([className, time]) => {
     document.querySelector(`.${className}`).addEventListener("click", () => {
       updateTimer(className, time);
+      localStorage.setItem("durationConfigID", className);
+      localStorage.setItem("durationConfig", time);
+      main();
     });
   });
 
   Object.entries(wordDict).forEach(([className, word]) => {
     document.querySelector(`.${className}`).addEventListener("click", () => {
       updateWords(className, word);
+      localStorage.setItem("durationConfigID", className);
+      localStorage.setItem("durationConfig", word);
+      main();
     });
   });
 
@@ -70,30 +73,33 @@ export function initEvents(main) {
   document.querySelector("#popup button").addEventListener("click", () => {
     Object.keys(timeDict).forEach(key => { document.querySelector(`.${key}`).classList = key })
     Object.keys(wordDict).forEach(key => { document.querySelector(`.${key}`).classList = key })
+    
     if (window.isWordTest) {
-      window.wordNum = document.getElementById("custom-test-duration").value;
+      window.wordNum = document.getElementById("custom-test-duration").value || 25;
       addClass(document.querySelector(".word-custom"), "active")
     } else {
-      window.gameTime = document.getElementById("custom-test-duration").value;
+      window.gameTime = document.getElementById("custom-test-duration").value || 30;
       addClass(document.querySelector(".timer-custom"), "active")
       document.getElementById("count-down").innerHTML = `${window.gameTime}`;
     }
+    localStorage.setItem("durationConfig", document.getElementById("custom-test-duration").value);
     document.getElementById("popup").classList = "hide";
+    document.getElementById("count-down").classList = "";
     main();
   })
 
   // custom timer  button behavior 
   document.querySelector(".timer-custom").addEventListener("click", () => {
+    document.getElementById("count-down").classList = "hide";
     document.querySelector("#popup .title").innerHTML = "custom test duration"
     document.getElementById("popup").classList = "show";
-    document.getElementById("custom-test-duration").value = window.gameTime;
   })
 
   // custom word  button behavior 
   document.querySelector(".word-custom").addEventListener("click", () => {
+    document.getElementById("count-down").classList = "hide";
     document.querySelector("#popup .title").innerHTML = "custom word amount"
     document.getElementById("popup").classList = "show";
-    document.getElementById("custom-test-duration").value = window.wordNum;
   })
 
 }
@@ -269,7 +275,7 @@ export function handleKeydown(e, gameOver, moveCursor) {
   }
 
   // scrolling line
-  if (currWord.getBoundingClientRect().top > 430) {
+  if (currWord.getBoundingClientRect().top > 480) {
     const words = document.getElementById("words");
     const margin = parseFloat(words.style.marginTop || "0px");
     words.style.marginTop = (margin - 36.5) + "px";
@@ -279,8 +285,8 @@ export function handleKeydown(e, gameOver, moveCursor) {
   moveCursor();
 }
 
-// dark/light mode toggle
 document.addEventListener("DOMContentLoaded", () => {
+  // dark/light mode toggle
   const toggleButton = document.getElementById("theme-toggle");
   const rootElement = document.documentElement;
 
@@ -292,4 +298,17 @@ document.addEventListener("DOMContentLoaded", () => {
     rootElement.setAttribute("data-theme", newTheme);
     localStorage.setItem("theme", newTheme);
   });
+
+  const configClass = localStorage.getItem("durationConfigID") || "timer-30";
+  const configDuration = localStorage.getItem("durationConfig") || 30;
+
+  
+  if (configClass.indexOf("word") !== -1) {
+    updateWords(configClass, configDuration);
+  } else {
+    updateTimer(configClass, configDuration);
+  }
+
 });
+
+
