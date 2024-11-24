@@ -21,6 +21,8 @@ export function newGame(textLen, arr) {
   window.timer = null;
   window.gameStart = null;
   window.wordCount = 0;
+  window.typedLetter = 0;
+  window.typedLetterIncorrect = 0;
   document.getElementById("words").style.marginTop = "0px"
   if (window.isWordTest) {
     document.getElementById("count-down").innerHTML = `${window.wordCount}/${window.wordNum}`;
@@ -54,19 +56,8 @@ export function getWord(arr) {
 }
 
 function getStats() {
-  const words = [...document.querySelectorAll(".typed")];
-  let correctLettersCount = 0;
-  let incorrectLettersCount = 0;
-  words.forEach(word => {
-    const letters = [...word.children]
-    letters.forEach(letter => {
-      if (letter.classList[1] === "correct") correctLettersCount++;
-      if (letter.classList[1] === "incorrect") incorrectLettersCount++;
-    })
-  })
-
-  const WPM = (correctLettersCount+incorrectLettersCount)/5 * (60/window.gameTime)
-  const accuracy = correctLettersCount * 100 / (correctLettersCount + incorrectLettersCount)
+  const WPM = (window.typedLetter)/5 * (60/window.gameTime)
+  const accuracy = (window.typedLetter - window.typedLetterIncorrect) * 100 / window.typedLetter
 
   return [WPM, accuracy]
 }

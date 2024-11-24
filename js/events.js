@@ -106,6 +106,11 @@ export function handleKeydown(e, gameOver, moveCursor) {
   const isLetter = key.length === 1 && key !== " "
   const expected = currLetter?.innerHTML || " ";
 
+  window.typedLetter++;
+  if (key !== expected && isLetter) {
+    window.typedLetterIncorrect++;
+  }
+
   // lock game if game over
   if (document.querySelector("#game.over")) {
     return;
@@ -193,7 +198,7 @@ export function handleKeydown(e, gameOver, moveCursor) {
       addClass(currWord.nextSibling.firstChild, "current")
     }
     // add class typed if not already added
-    if (currWord.className.indexOf("typed") !== -1) {
+    if (!currWord.classList.contains("typed")) {
       addClass(currWord, "typed")
     }
   }
@@ -211,7 +216,7 @@ export function handleKeydown(e, gameOver, moveCursor) {
       removeClass(currWord.previousSibling.lastChild, "incorrect")
       removeClass(currWord.previousSibling.lastChild, "correct")
 
-      if (currWord.previousSibling.lastChild.className.indexOf("extra") !== -1) {
+      if (currWord.previousSibling.lastChild.classList.contains("extra")) {
         currWord.previousSibling.lastChild.remove();
       }
     }

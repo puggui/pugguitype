@@ -9,6 +9,8 @@ window.gameTime = 30;
 window.wordNum = 100;
 window.isWordTest = null;
 window.wordCount = 0;
+window.typedLetter = 0;
+window.typedLetterIncorrect = 0;
 
 async function main() {
   try {
