@@ -278,3 +278,18 @@ export function handleKeydown(e, gameOver, moveCursor) {
   // move cursor
   moveCursor();
 }
+
+// dark/light mode toggle
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleButton = document.getElementById("theme-toggle");
+  const rootElement = document.documentElement;
+
+  const currentTheme = localStorage.getItem("theme") || "light";
+  rootElement.setAttribute("data-theme", currentTheme);
+
+  toggleButton.addEventListener("click", () => {
+    const newTheme = rootElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+    rootElement.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+  });
+});

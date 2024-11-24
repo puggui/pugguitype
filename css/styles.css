@@ -1,11 +1,42 @@
 @import url(https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap);
 
 :root {
-  --bgColor: #313231;
-  --subColor: #3b3b3b;
-  --textPrimary: #fff;
-  --textSecondary: #5d6263;;
-  --primaryColor: #e2e2e2c1;
+  --bgColor-dark: #313231;
+  --subColor-dark: #3b3b3b;
+  --textPrimary-dark: #fff;
+  --textSecondary-dark: #5d6263;;
+  --primaryColor-dark: #e2e2e2c1;
+  --letterCorrect-dark: #fff;
+  --letterIncorrect-dark: #f55;
+
+  --bgColor-light: #dbdbdb;
+  --subColor-light: #a3a2a2;
+  --textPrimary-light: #454545;
+  --textSecondary-light: #a3a2a2;
+  --primaryColor-light: #454545;
+  --letterCorrect-light: #454545;
+  --letterIncorrect-light: rgb(226, 63, 63);
+}
+
+:root[data-theme="dark"] {
+  --bgColor: var(--bgColor-dark);
+  --subColor: var(--subColor-dark);
+  --textPrimary: var(--textPrimary-dark);
+  --textSecondary: var(--textSecondary-dark);
+  --primaryColor: var(--primaryColor-dark);
+  --letterCorrect: var(--letterCorrect-dark);
+  --letterIncorrect: var(--letterIncorrect-dark);
+}
+
+
+:root[data-theme="light"] {
+  --bgColor: var(--bgColor-light);
+  --subColor: var(--subColor-light);
+  --textPrimary: var(--textPrimary-light);
+  --textSecondary: var(--textSecondary-light);
+  --primaryColor: var(--primaryColor-light);
+  --letterCorrect: var(--letterCorrect-light);
+  --letterIncorrect: var(--letterIncorrect-light);
 }
 
 body {
@@ -86,11 +117,11 @@ button {
 }
 
 .letter.correct {
-  color: #fff;
+  color: var(--letterCorrect);
 }
 
 .letter.incorrect {
-  color: #f55;
+  color: var(--letterIncorrect);
 }
 
 @keyframes blink {
@@ -215,4 +246,18 @@ button {
 #popup button:hover {
   background-color: var(--textPrimary);
   color: var(--textSecondary);
+}
+
+header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+header h1 {
+  text-align: left;
+  display: inline;
+}
+
+header button {
+  text-align: right;
 }
