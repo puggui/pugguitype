@@ -6,16 +6,14 @@
   --textPrimary-dark: #fff;
   --textSecondary-dark: #5d6263;;
   --primaryColor-dark: #e2e2e2c1;
-  --letterCorrect-dark: #fff;
   --letterIncorrect-dark: #f55;
 
-  --bgColor-light: #dbdbdb;
+  --bgColor-light: #f4f0f0;
   --subColor-light: #a3a2a2;
-  --textPrimary-light: #454545;
+  --textPrimary-light: #282640;
   --textSecondary-light: #a3a2a2;
-  --primaryColor-light: #454545;
-  --letterCorrect-light: #454545;
-  --letterIncorrect-light: rgb(226, 63, 63);
+  --primaryColor-light: #282640;
+  --letterIncorrect-light: #e23f3f;
 }
 
 :root[data-theme="dark"] {
@@ -24,7 +22,6 @@
   --textPrimary: var(--textPrimary-dark);
   --textSecondary: var(--textSecondary-dark);
   --primaryColor: var(--primaryColor-dark);
-  --letterCorrect: var(--letterCorrect-dark);
   --letterIncorrect: var(--letterIncorrect-dark);
 }
 
@@ -35,16 +32,16 @@
   --textPrimary: var(--textPrimary-light);
   --textSecondary: var(--textSecondary-light);
   --primaryColor: var(--primaryColor-light);
-  --letterCorrect: var(--letterCorrect-light);
   --letterIncorrect: var(--letterIncorrect-light);
 }
 
 body {
   font-family: 'Roboto Mono', monospace;
-  /* font-family: monospace; */
   background-color: var(--bgColor);
   color: var(--textPrimary);
   margin: 50px;
+  min-height: 100vh;
+  margin: 0 50px;
   /* prevent user select */
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
@@ -65,7 +62,7 @@ main {
 #header {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  margin: 130px 6px 30px;
+  margin: 100px 6px 30px;
   color: var(--primaryColor)
 }
 
@@ -117,7 +114,7 @@ button {
 }
 
 .letter.correct {
-  color: var(--letterCorrect);
+  color: var(--textPrimary);
 }
 
 .letter.incorrect {
@@ -180,7 +177,8 @@ button {
   display: none;
 }
 
-#config button {
+#config button,
+#config span {
   font-size: 12px;
   color: var(--textSecondary);
 }
@@ -201,6 +199,12 @@ button {
 
 #alphabet button {
   padding: 2px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+#config button:hover {
+  color: var(--primaryColor);
 }
 
 #popup .bg {
@@ -258,6 +262,7 @@ button {
 }
 
 header {
+  padding-top: 50px;
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
@@ -269,4 +274,20 @@ header h1 {
 
 header button {
   text-align: right;
+}
+
+footer a {
+  color: var(--primaryColor);
+  text-decoration: none;
+  font-size: 14px;
+  display: block;
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  left: calc(50% - 25px);
+  padding-bottom: 30px;
+}
+
+footer a:hover {
+  color: var(--textPrimary);
 }

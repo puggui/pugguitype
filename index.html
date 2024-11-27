@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Stylesheet -->
-  <link rel="stylesheet" href="./css/styles.css">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="./css/styles.css">
+    <!-- Script -->
+    <script src="./js/main.js" type="module" defer></script>
 
   <title>pugguitype</title>
 </head>
@@ -30,21 +32,21 @@
 
   <div id="config">
     <div id="timer-num">
-      <button class="timer-num-btn">time</button>
+      <span>time</span>
       <button class="timer-15">15</button>
       <button class="timer-30 active">30</button>
       <button class="timer-60">60</button>
       <button class="timer-custom">custom</button>
     </div>
     <div id="word-num">
-      <button class="word-num-btn">word</button>
+      <span>word</span>
       <button class="word-10">10</button>
       <button class="word-25">25</button>
       <button class="word-50">50</button>
       <button class="word-custom">custom</button>
     </div>
     <div id="alphabet">
-      <button id="alph-none">#</button>
+      <button id="all-letter">#</button>
       <button id="A">A</button>
       <button id="B">B</button>
       <button id="C">C</button>
@@ -87,8 +89,8 @@
   <div id="stats" class="hide">
     WPM: 120, Accuracy = 100%
   </div>
-
-  <!-- script -->
-  <script src="./js/main.js" type="module"></script>
+  <footer>
+    <a href="https://github.com/puggui/pugguitype" target="_blank" >github</a>
+  </footer>
 </body>
 </html>

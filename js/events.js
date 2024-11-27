@@ -49,6 +49,19 @@ export function initEvents(main) {
       main();
     }
   });
+
+  // letter focus
+  document.getElementById("alphabet").addEventListener("click", e => {
+    const element = e.target;
+    if (element.id !== "alphabet") {
+      let allLetters = [...document.getElementById("alphabet").children]
+      allLetters.forEach(letter => {letter.className = ""})
+      addClass(element, "active"); 
+      localStorage.setItem("letter", element.id);
+      window.filePath = `./data/${element.id}.json`;
+      main();
+    }
+  })
   
   // Add event listeners for predefined timers
   Object.entries(timeDict).forEach(([className, time]) => {
@@ -275,7 +288,7 @@ export function handleKeydown(e, gameOver, moveCursor) {
   }
 
   // scrolling line
-  if (currWord.getBoundingClientRect().top > 480) {
+  if (currWord.getBoundingClientRect().top > 450) {
     const words = document.getElementById("words");
     const margin = parseFloat(words.style.marginTop || "0px");
     words.style.marginTop = (margin - 36.5) + "px";
@@ -290,7 +303,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggleButton = document.getElementById("theme-toggle");
   const rootElement = document.documentElement;
 
-  const currentTheme = localStorage.getItem("theme") || "light";
+  const currentTheme = localStorage.getItem("theme") || "dark";
   rootElement.setAttribute("data-theme", currentTheme);
 
   toggleButton.addEventListener("click", () => {
@@ -308,7 +321,5 @@ document.addEventListener("DOMContentLoaded", () => {
   } else {
     updateTimer(configClass, configDuration);
   }
-
 });
-
 
